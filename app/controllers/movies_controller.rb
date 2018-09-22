@@ -1,5 +1,6 @@
 class MoviesController < ApplicationController
-
+  @@selected_ratings = Movie.all_ratings
+  
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -13,15 +14,27 @@ class MoviesController < ApplicationController
   def index
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
-    @cur_ratings = @all_ratings
+    @cur_ratings = Hash.new
+    
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
-      session[:ratings] = params[:ratings]
-    elsif session[:ratings]
-      @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
+      @@selected_ratings = params[:ratings].keys
+      @@selected_ratings.each do |rating|
+        @cur_ratings[rating] = 1
+      end
+      
+    elsif @@selected_ratings
+      @movies = Movie.order(params[:sort_by]).where({rating: @@selected_ratings})
+      @@selected_ratings.each do |rating|
+        @cur_ratings[rating] = 1
+      end
+      
     else
-      @movies = Movie.order(params[:sort_by]).where({rating: @all_ratings})
+      @movies = Movie.order(params[:sort_by])
+      @all_ratings.each do |rating|
+        @cur_ratings[rating] = 1
+      end
     end
      
     if params[:sort_by] == 'title'
