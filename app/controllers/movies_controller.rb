@@ -14,9 +14,12 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     
-    @movies = Movie.order(params[:sort_by])
-    # @movies = Movie.order(params[:sort_by])
-
+    if params[:ratings]
+      @movies = Movie.where({rating: params[:ratings].keys}).order(params[:sort_by])
+    else
+      @movies = Movie.order(params[:sort_by])
+    end
+     
     if params[:sort_by] == 'title'
       @title_header = 'hilite'
     elsif params[:sort_by] == 'release_date'
