@@ -13,11 +13,15 @@ class MoviesController < ApplicationController
   def index
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
+    @cur_ratings = @all_ratings
     
     if params[:ratings]
-      @movies = Movie.where({rating: params[:ratings].keys}).order(params[:sort_by])
+      @movies = Movie.where({rating: params[:ratings].keys})
+      session[:ratings] = params[:ratings]
+    elsif session[:ratings]
+      @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
     else
-      @movies = Movie.order(params[:sort_by])
+      @movies = Movie.order(params[:sort_by]).where({rating: @all_ratings})
     end
      
     if params[:sort_by] == 'title'
