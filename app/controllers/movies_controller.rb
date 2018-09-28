@@ -19,7 +19,6 @@ class MoviesController < ApplicationController
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
-      # session[:sort_by] = params[:sort_by]
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
@@ -41,7 +40,6 @@ class MoviesController < ApplicationController
       
     else
       @movies = Movie.order(params[:sort_by])
-      session[:sort_by] = params[:sort_by]
       @all_ratings.each do |rating|
         @cur_ratings[rating] = 1
       end
