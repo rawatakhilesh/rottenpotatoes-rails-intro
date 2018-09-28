@@ -17,8 +17,8 @@ class MoviesController < ApplicationController
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
-      # session[:ratings] = params[:ratings]
-      # session[:sort_by] = params[:sort_by]
+      session[:ratings] = params[:ratings]
+      session[:sort_by] = params[:sort_by]
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
