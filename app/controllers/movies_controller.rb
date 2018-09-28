@@ -19,11 +19,13 @@ class MoviesController < ApplicationController
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
-      
+      # session[:sort_by] = params[:sort_by]
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
       
+      
+        
     elsif session[:ratings] and session[:sort_by]
       @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
       session[:ratings].keys.each do |rating|
@@ -43,7 +45,7 @@ class MoviesController < ApplicationController
         @cur_ratings[rating] = 1
       end
     end
-    
+     
     if params[:sort_by] == 'title'
       @title_header = 'hilite'
     elsif params[:sort_by] == 'release_date'
