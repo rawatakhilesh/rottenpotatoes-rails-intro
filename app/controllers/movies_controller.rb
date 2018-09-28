@@ -14,29 +14,22 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
-    
+    set = 0
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
-      
+      set = 1
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
-      
-      
-        
-    elsif session[:ratings] and session[:sort_by]
-      @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
-      session[:ratings].keys.each do |rating|
-        @cur_ratings[rating] = 1
-      end  
-      
+    
       
     # if session has ratings stored  
-    elsif session[:ratings] and session[:sort_by] == nil
+    elsif session[:ratings]
       @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
-      session[:sort_by] = params[:sort_by]
+      @cur_sort = params[:sort_by]
+      set = 1
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
@@ -48,6 +41,10 @@ class MoviesController < ApplicationController
       @all_ratings.each do |rating|
         @cur_ratings[rating] = 1
       end
+    end
+    
+    if set = 1
+      redirect_to movies_path(:sort_by => @cur_sort, :rating => session[:ratings])
     end
      
     if params[:sort_by] == 'title'
