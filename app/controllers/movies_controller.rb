@@ -14,6 +14,7 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
+    @cur_sort = params[:sort_by]
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
@@ -23,14 +24,24 @@ class MoviesController < ApplicationController
         @cur_ratings[rating] = 1
       end
       
+    # if session has ratings stored  
     elsif session[:ratings]
       @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
       
+      
+    
+    elsif session[:ratings] and session[:sort_by]
+      @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
+      session[:ratings].keys.each do |rating|
+        @cur_ratings[rating] = 1
+      end    
+    
+    # if no params passed
     else
-      @movies = Movie.order(session[:sort_by])
+      @movies = Movie.order(params[:sort_by])
       @all_ratings.each do |rating|
         @cur_ratings[rating] = 1
       end
