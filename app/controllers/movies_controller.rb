@@ -23,11 +23,9 @@ class MoviesController < ApplicationController
       end
     
     elsif session[:ratings] and session[:sort_by]
-      @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
+      redirect_to movies_path(:sort_by => session[:sort_by], :rating => session[:ratings].keys)
       session[:sort_by] = nil
-      session[:ratings].keys.each do |rating|
-        @cur_ratings[rating] = 1
-      end
+
       
     # if session has ratings stored  
     elsif session[:ratings]
