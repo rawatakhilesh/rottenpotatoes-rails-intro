@@ -31,7 +31,6 @@ class MoviesController < ApplicationController
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end  
-      # redirect_to movies_path
       
     # if session has ratings stored  
     elsif session[:ratings] and session[:sort_by] == nil
