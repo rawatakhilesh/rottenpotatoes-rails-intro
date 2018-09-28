@@ -19,23 +19,24 @@ class MoviesController < ApplicationController
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
-      session[:sort_by] = params[:sort_by]
+      
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
       
       
         
-    #elsif session[:ratings] and session[:sort_by]
-      #@movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
-      #session[:ratings].keys.each do |rating|
-        #@cur_ratings[rating] = 1
-      #end  
+    elsif session[:ratings] and session[:sort_by]
+      @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
+      session[:ratings].keys.each do |rating|
+        @cur_ratings[rating] = 1
+      end  
       
       
     # if session has ratings stored  
     elsif session[:ratings] and session[:sort_by] == nil
       @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
+      session[:sort_by] = params[:sort_by]
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
