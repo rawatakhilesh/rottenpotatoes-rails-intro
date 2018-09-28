@@ -15,6 +15,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
     
+    
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
@@ -33,11 +34,11 @@ class MoviesController < ApplicationController
       
       
     # if session has ratings stored  
-    elsif session[:ratings] and session[:sort_by] == nil
-      @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
-      session[:ratings].keys.each do |rating|
-        @cur_ratings[rating] = 1
-      end
+    #elsif session[:ratings] and session[:sort_by] == nil
+      #@movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
+      #session[:ratings].keys.each do |rating|
+        #@cur_ratings[rating] = 1
+      #end
       
     
     # if no params passed
