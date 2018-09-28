@@ -26,19 +26,17 @@ class MoviesController < ApplicationController
       
       
         
-    elsif session[:ratings] and session[:sort_by]
+    elsif session[:ratings]
+      query = Hash.new
       @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end  
+      query['sort'] = params[:sort_by] if params[:sort_by]
+      session[:ratings] = nil
+      flash.keep
+      redirect_to movies_path(query)
       
-      
-    # if session has ratings stored  
-    elsif session[:ratings]
-      @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
-      session[:ratings].keys.each do |rating|
-        @cur_ratings[rating] = 1
-      end
       
     
     # if no params passed
