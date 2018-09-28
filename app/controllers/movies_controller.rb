@@ -14,6 +14,7 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
+    session[:sort_by] = nil
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
@@ -25,7 +26,7 @@ class MoviesController < ApplicationController
     elsif session[:ratings] and session[:sort_by] != nil
       flash.keep
       redirect_to movies_path(:sort_by => session[:sort_by], :rating => session[:ratings].keys)
-      session[:sort_by] = nil
+      
       
     # if session has ratings stored  
     elsif session[:ratings]
