@@ -31,7 +31,6 @@ class MoviesController < ApplicationController
         @cur_ratings[rating] = 1
       end
       
-    
     # if no params passed
     else
       @movies = Movie.order(params[:sort_by])
