@@ -21,7 +21,12 @@ class MoviesController < ApplicationController
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
-
+    
+    elsif session[:ratings] and session[:sort_by] != nil
+      flash.keep
+      redirect_to movies_path(:sort_by => session[:sort_by], :rating => session[:ratings].keys)
+      session[:sort_by] = nil
+      
     # if session has ratings stored  
     elsif session[:ratings]
       @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
@@ -29,12 +34,6 @@ class MoviesController < ApplicationController
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
-      
-    elsif session[:ratings] and session[:sort_by] != nil
-      flash.keep
-      redirect_to movies_path(:sort_by => session[:sort_by], :rating => session[:ratings].keys)
-      session[:sort_by] = nil
-            
       
     # if no params passed
     else
