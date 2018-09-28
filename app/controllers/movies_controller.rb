@@ -25,9 +25,7 @@ class MoviesController < ApplicationController
       
     # if session has ratings stored  
     elsif session[:ratings]
-      @cur_sort = params[:sort_by]
-      session[:sort_by] = params[:sort_by]
-      @movies = Movie.order(session[:sort_by]).where({rating: session[:ratings].keys})
+      @movies = Movie.order(params[:sort_by]).where({rating: session[:ratings].keys})
       
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
