@@ -40,7 +40,7 @@ class MoviesController < ApplicationController
       end
       
     else
-      @movies = Movie.order(params[:sort_by])
+      @movies = Movie.order(session[:sort_by])
       session[:sort_by] = params[:sort_by]
       @all_ratings.each do |rating|
         @cur_ratings[rating] = 1
