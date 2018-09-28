@@ -14,12 +14,12 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
-    @cur_sort = params[:sort_by]
+    session[:sort_by] = params[:sort_by]
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
       session[:ratings] = params[:ratings]
-      session[:sort_by] = params[:sort_by]
+      # session[:sort_by] = params[:sort_by]
       session[:ratings].keys.each do |rating|
         @cur_ratings[rating] = 1
       end
