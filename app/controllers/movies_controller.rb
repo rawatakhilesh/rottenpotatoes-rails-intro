@@ -14,7 +14,6 @@ class MoviesController < ApplicationController
     # list rating ratings from the class method of Movie
     @all_ratings = Movie.all_ratings
     @cur_ratings = Hash.new
-    session[:sort_by] = nil
     
     if params[:ratings]
       @movies = Movie.where({rating: params[:ratings].keys})
